@@ -1,29 +1,38 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 
-const ChatForm = ({ chatHistory, setChatHistory, generateBotResponse }) => {
+const ChatForm = ({ chatHistory = [], setChatHistory, generateBotResponse }) => {
     const inputRef = useRef();
-    
+
     const handleFormSubmit = (e) => {
         e.preventDefault();
         const userMessage = inputRef.current.value.trim();
         if (!userMessage) return;
+        
         inputRef.current.value = "";
+        
+        // 1. Asegurar que chatHistory sea un array
+        const updatedHistory = Array.isArray(chatHistory) 
+            ? [...chatHistory, { role: "user", text: userMessage }]
+            : [{ role: "user", text: userMessage }];
+        
+        setChatHistory(updatedHistory);
 
-        setChatHistory(history => [...history, { role: "user", text: userMessage }]);
+        setTimeout(() => {
+            setChatHistory(prev => [...prev, { role: "model", text: "Pensando..." }]);
+        }, 600);
 
-        setTimeout(() => setChatHistory((history) => [...history, { role: "model", text: "Pensando..." }]), 600);
-
-        generateBotResponse(...chatHistory, { role: "user", text: userMessage } );
+        // 2. Pasar el array directamente
+        generateBotResponse([...chatHistory, { role: "user", text: userMessage }]);
     };
 
     return (
-        <form action="#" className="chat-form" onSubmit={handleFormSubmit}>
-            <input 
-                ref={inputRef} 
-                type="text" 
-                placeholder="Mensaje..." 
-                className="message-input" 
-                required 
+        <form onSubmit={handleFormSubmit} className="chat-form">
+            <input
+                ref={inputRef}
+                type="text"
+                placeholder="Mensaje..."
+                className="message-input"
+                required
             />
             <button type="submit" className="material-symbols-rounded">
                 arrow_upward

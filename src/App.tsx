@@ -29,7 +29,7 @@ const App = () => {
           <div className="message bot-message">
             <ChatbotIcon />
             <p className="message-text">
-              Hola 👋 <br /> ¿Cómo te puedo ayudar el día de hoy?
+              Hola 👋 <br /> ¿Listo para evaluar a los docentes?
             </p>  
           </div>
 
@@ -40,7 +40,7 @@ const App = () => {
 
         {/* Chatbox Footer */}
         <div className="chat-footer">
-          <ChatForm setChatHistory={chatHistory} setChatHistory={setChatHistory} generateBotResponse={generateBotResponse}/>
+          <ChatForm chatHistory={chatHistory} setChatHistory={setChatHistory} generateBotResponse={generateBotResponse}/>
         </div>
       </div>
     </div>
